@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Salary Management - SmartERP</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 45px;
+            padding-left: 15px;
+        }
+
+        .logo span {
+            color: #00bcd4;
+        }
+
+        .menu-title {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0 0 15px 15px;
+            text-transform: uppercase;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #d1d5db;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .menu a:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .logout-btn {
+            background: #dc3545 !important;
+            color: white !important;
+            margin-top: 25px;
+        }
+
+        .logout-btn:hover {
+            background: #b02a37 !important;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 240px;
+            min-height: 100vh;
+        }
+
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+        }
+
+        .topbar h2 {
+            font-size: 24px;
+        }
+
+        .admin {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 35px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+        }
+
+
+        /* ================= CARDS ================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #6b7280;
+            font-size: 15px;
+            font-weight: normal;
+        }
+
+        .card p {
+            margin: 12px 0 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .total {
+            border-left: 5px solid #2563eb;
+        }
+
+        .highest {
+            border-left: 5px solid #16a34a;
+        }
+
+        .lowest {
+            border-left: 5px solid #dc3545;
+        }
+
+
+        /* ================= TABLE ================= */
+
+        .table-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        .table-title {
+            margin-bottom: 20px;
+        }
+
+        .table-title h2 {
+            font-size: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #111827;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+
+        /* ================= SALARY ================= */
+
+        .salary {
+            font-weight: bold;
+            color: #15803d;
+        }
+
+
+        /* ================= DEPARTMENT ================= */
+
+        .department {
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 6px 12px;
+            border-radius: 15px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        /* ================= NO DATA ================= */
+
+        .no-data {
+            text-align: center;
+            padding: 35px;
+            color: #6b7280;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            Smart<span>ERP</span>
+        </div>
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+        <div class="menu">
+
+            <!-- Dashboard -->
+
+            <a href="{% url 'dashboard' %}">
+                🏠 Dashboard
+            </a>
+
+
+            <!-- Employees -->
+
+            <a href="{% url 'employee_list' %}">
+                👥 Employees
+            </a>
+
+
+            <!-- Departments -->
+
+            <a href="{% url 'department_list' %}">
+                📁 Departments
+            </a>
+
+
+            <!-- Salary -->
+
+            <a href="{% url 'salary_list' %}"
+               class="active">
+                💰 Salary
+            </a>
+
+
+            <!-- Reports -->
+
+            <a href="{% url 'reports' %}">
+                📊 Reports
+            </a>
+
+
+            <!-- AI Assistant -->
+
+            <a href="{% url 'ai_assistant' %}">
+                🤖 AI Assistant
+            </a>
+
+
+            <!-- Logout -->
+
+            <a href="{% url 'logout' %}"
+               class="logout-btn">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="main">
+
+
+        <!-- ================= TOPBAR ================= -->
+
+        <div class="topbar">
+
+            <h2>
+                Salary Management
+            </h2>
+
+            <div class="admin">
+                Welcome, {{ request.user.username }} 👋
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="content">
+
+
+            <!-- ================= PAGE HEADER ================= -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1>
+                        Salary Management
+                    </h1>
+
+                    <p>
+                        View and analyze employee salary information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= SALARY CARDS ================= -->
+
+            <div class="cards">
+
+
+                <!-- TOTAL SALARY -->
+
+                <div class="card total">
+
+                    <h3>
+                        Total Salary
+                    </h3>
+
+                    <p>
+                        ₹{{ total_salary }}
+                    </p>
+
+                </div>
+
+
+                <!-- HIGHEST SALARY -->
+
+                <div class="card highest">
+
+                    <h3>
+                        Highest Salary
+                    </h3>
+
+                    <p>
+                        ₹{{ highest_salary }}
+                    </p>
+
+                </div>
+
+
+                <!-- LOWEST SALARY -->
+
+                <div class="card lowest">
+
+                    <h3>
+                        Lowest Salary
+                    </h3>
+
+                    <p>
+                        ₹{{ lowest_salary }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= SALARY TABLE ================= -->
+
+            <div class="table-container">
+
+                <div class="table-title">
+
+                    <h2>
+                        Employee Salary Details
+                    </h2>
+
+                </div>
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Employee Name
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Department
+                            </th>
+
+                            <th>
+                                Salary
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for employee in employees %}
+
+                        <tr>
+
+                            <td>
+                                {{ employee.name }}
+                            </td>
+
+                            <td>
+                                {{ employee.email }}
+                            </td>
+
+                            <td>
+
+                                {% if employee.department %}
+
+                                    <span class="department">
+                                        {{ employee.department.name }}
+                                    </span>
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </td>
+
+                            <td class="salary">
+                                ₹{{ employee.salary }}
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="4"
+                                class="no-data">
+
+                                No salary records found.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

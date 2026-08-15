@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Departments - SmartERP</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 45px;
+            padding-left: 15px;
+        }
+
+        .logo span {
+            color: #00bcd4;
+        }
+
+        .menu-title {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0 0 15px 15px;
+            text-transform: uppercase;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #d1d5db;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .menu a:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .logout-btn {
+            background: #dc3545 !important;
+            color: white !important;
+            margin-top: 25px;
+        }
+
+        .logout-btn:hover {
+            background: #b02a37 !important;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 240px;
+            min-height: 100vh;
+        }
+
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+        }
+
+        .topbar h2 {
+            font-size: 24px;
+        }
+
+        .admin {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 35px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            background: #2563eb;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ================= TABLE CARD ================= */
+
+        .table-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        .table-title {
+            margin-bottom: 20px;
+        }
+
+        .table-title h2 {
+            font-size: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #111827;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+
+        /* ================= DEPARTMENT NAME ================= */
+
+        .department-name {
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+
+        /* ================= ACTIONS ================= */
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-btn {
+            background: #16a34a;
+        }
+
+        .edit-btn:hover {
+            background: #15803d;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background: #b02a37;
+        }
+
+
+        /* ================= NO DATA ================= */
+
+        .no-data {
+            text-align: center;
+            padding: 35px;
+            color: #6b7280;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .page-header {
+                align-items: stretch;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            Smart<span>ERP</span>
+        </div>
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+        <div class="menu">
+
+            <!-- Dashboard -->
+
+            <a href="{% url 'dashboard' %}">
+                🏠 Dashboard
+            </a>
+
+
+            <!-- Employees -->
+
+            <a href="{% url 'employee_list' %}">
+                👥 Employees
+            </a>
+
+
+            <!-- Departments -->
+
+            <a href="{% url 'department_list' %}"
+               class="active">
+                📁 Departments
+            </a>
+
+
+            <!-- Salary -->
+
+            <a href="{% url 'salary_list' %}">
+                💰 Salary
+            </a>
+
+
+            <!-- Reports -->
+
+            <a href="{% url 'reports' %}">
+                📊 Reports
+            </a>
+
+
+            <!-- AI Assistant -->
+
+            <a href="{% url 'ai_assistant' %}">
+                🤖 AI Assistant
+            </a>
+
+
+            <!-- Logout -->
+
+            <a href="{% url 'logout' %}"
+               class="logout-btn">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="main">
+
+
+        <!-- ================= TOPBAR ================= -->
+
+        <div class="topbar">
+
+            <h2>
+                Departments
+            </h2>
+
+            <div class="admin">
+                Welcome, {{ request.user.username }} 👋
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="content">
+
+
+            <!-- ================= PAGE HEADER ================= -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1>
+                        Department Management
+                    </h1>
+
+                    <p>
+                        Manage company departments and their information.
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <a href="{% url 'add_department' %}"
+                       class="btn add-btn">
+                        + Add Department
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= DEPARTMENT TABLE ================= -->
+
+            <div class="table-container">
+
+                <div class="table-title">
+
+                    <h2>
+                        All Departments
+                    </h2>
+
+                </div>
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Department Name
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for department in departments %}
+
+                        <tr>
+
+                            <td>
+                                {{ department.id }}
+                            </td>
+
+                            <td class="department-name">
+                                {{ department.name }}
+                            </td>
+
+                            <td>
+
+                                <div class="actions">
+
+                                    <!-- EDIT -->
+
+                                    <a
+                                        href="{% url 'edit_department' department.id %}"
+                                        class="btn edit-btn">
+                                        Edit
+                                    </a>
+
+
+                                    <!-- DELETE -->
+
+                                    <a
+                                        href="{% url 'delete_department' department.id %}"
+                                        class="btn delete-btn">
+                                        Delete
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="3"
+                                class="no-data">
+
+                                No departments found.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
