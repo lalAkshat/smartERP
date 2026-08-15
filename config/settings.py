@@ -14,13 +14,27 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-local-development-key'
+)
+
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get(
+        'ALLOWED_HOSTS',
+        '127.0.0.1,localhost'
+    ).split(',')
+    if host.strip()
+]
+
 
 # =====================================================
 # SECURITY
 # =====================================================
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 
 # Render automatically provides this variable
